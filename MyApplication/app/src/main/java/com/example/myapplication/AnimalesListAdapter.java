@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,9 @@ public class AnimalesListAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_card, parent, false);
-        return new CardViewHolder(view);
+
+        CardViewHolder cardViewHolder = new CardViewHolder(view);
+        return cardViewHolder;
     }
 
     @Override
@@ -35,6 +38,8 @@ public class AnimalesListAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return animales.size();
     }
+
+
 
     public AnimalesListAdapter(List<Animal> animales){
 

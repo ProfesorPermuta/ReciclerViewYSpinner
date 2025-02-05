@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/detalles"
+        android:title="Detalles" />
+    <item
+        android:id="@+id/solicitud"
+        android:icon="@android:drawable/btn_plus"
+        android:title="Solicitar animal" />
+    <item
+        android:id="@+id/contacto"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="Contacto" />
+</menu>

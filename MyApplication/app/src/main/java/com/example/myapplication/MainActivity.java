@@ -1,15 +1,28 @@
 package com.example.myapplication;
 
+import static android.widget.Toast.LENGTH_LONG;
+
+import android.app.Activity;
 import android.os.Bundle;
+import android.text.style.IconMarginSpan;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private RecyclerView rv;
+
+    private AnimalViewModel animalViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +53,25 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        /*View Model*/
+            animalViewModel = new ViewModelProvider(this).get(AnimalViewModel.class);
 
-        /*Recycler View*/
-        ArrayList<Animal> animales = new ArrayList<Animal>();
-        animales.add(new Animal(animales.size() + 1, "León", "El rey de la jungla", R.drawable.leon));
-        animales.add(new Animal(animales.size() + 1, "Elefante", "Es enorme", R.drawable.elefante));
+        /*Fin ViewModel*/
+
+
+        animalViewModel.animales.observe(this, animals -> {
+            rv.setAdapter(new AnimalesListAdapter(animals));
+        });
+
+        /* Recycler View */
 
         rv = findViewById(R.id.rvContainer);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setAdapter(new AnimalesListAdapter(animales));
+
         /*Fin recycler view*/
 
 
-        /*Inicio Spinner*/
+        /* Inicio Spinner */
 
         Spinner sp = findViewById(R.id.spinner);
 
@@ -60,6 +82,41 @@ public class MainActivity extends AppCompatActivity {
 
         sp.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, animalesSpinner));
 
-        /*Fin Spinner*/
+        /* Fin Spinner */
+
+        /* Inicio toolbar */
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        /* Fin ToolBar */
+
     }
+    /* Metodos sobreescritos para gestionar las opciones del toolbar */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_opciones, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int op = item.getItemId();
+
+        if(op == R.id.detalles){
+            animalViewModel.addAnimal(new Animal(3, "León 2", "El rey de la jungla 2", R.drawable.leon));
+
+            return true;
+        }
+
+        if (op == R.id.contacto){
+            return true;
+        }
+
+        if (op == R.id.solicitud){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
